@@ -1,0 +1,35 @@
+
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+model Brand {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  brandLogo String
+  products Product[]
+
+}
+
+model Product{
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  name String 
+  description  String 
+  status Boolean @default(true)
+  price String
+  photo String?
+  // photos String[]
+  brandId String @db.ObjectId
+  brand Brand @relation(fields : [brandId], references: [id])
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+
+}
